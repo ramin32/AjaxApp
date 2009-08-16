@@ -1,0 +1,33 @@
+<web-app version="2.4"
+	xmlns="http://java.sun.com/xml/ns/j2ee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee
+	http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+
+	<servlet>
+		<servlet-name>Hey</servlet-name>
+		<servlet-class>tk.raminrakhamimov.Hey</servlet-class>
+	</servlet>
+
+	<servlet>
+		<servlet-name>Add</servlet-name>
+		<servlet-class>tk.raminrakhamimov.Add</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>Hey</servlet-name>
+		<url-pattern>/hey</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>Add</servlet-name>
+		<url-pattern>/add</url-pattern>
+	</servlet-mapping>
+
+	<welcome-file-list>
+		<welcome-file>
+			/index.html
+		</welcome-file>
+	</welcome-file-list>
+
+</web-app>

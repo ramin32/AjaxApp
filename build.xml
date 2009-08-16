@@ -1,0 +1,53 @@
+<project default="tomcat-start">
+    <property file="build.properties"/>
+
+    <path id="classpath">
+        <fileset dir="${tomcat.dir}/lib" includes="servlet-api.jar"/>
+    </path>
+
+    <target name="clean">
+        <delete dir="${build.dir}"/>
+        <delete dir="${dist.dir}"/>
+        <delete file="${tomcat.dir}/webapps/${project.name}.war"/>		
+        <delete dir="${tomcat.dir}/webapps/${project.name}"/>
+    </target>
+
+    <target name="init" depends="clean">
+        <mkdir dir="${build.dir}/WEB-INF/classes"/>
+        <mkdir dir="${build.dir}/WEB-INF/lib"/>
+        <mkdir dir="${dist.dir}"/>
+    </target>
+
+    <target name="compile" depends="init">
+        <echo>Compile the source files</echo>
+        <javac srcdir="${src.dir}" destdir="${build.dir}/WEB-INF/classes">
+            <classpath refid="classpath"/>
+        </javac>
+    </target>
+
+    <target name="copy" depends="compile">
+        <copy todir="${build.dir}">
+            <fileset dir="${web.dir}"/>
+        </copy>
+    </target>
+
+    <target name="war" depends="copy">
+        <echo>Building the war file</echo>
+        <war destfile="${dist.dir}/${project.name}.war" webxml="${build.dir}/WEB-INF/web.xml">
+            <fileset dir="${build.dir}"/>
+        </war>
+    </target>
+
+    <target name="deploy" depends="war">
+        <copy file="${dist.dir}/${project.name}.war" 
+            tofile="${tomcat.dir}/webapps/${project.name}.war" 
+            overwrite="yes"/>
+    </target>
+
+    <target name="tomcat-start" depends="deploy">
+        <java jar="${tomcat.dir}/bin/bootstrap.jar" fork="true">
+            <jvmarg value="-Dcatalina.home=${tomcat.dir}"/>
+        </java>
+    </target>
+
+</project>
